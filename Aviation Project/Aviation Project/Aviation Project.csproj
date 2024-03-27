@@ -1,0 +1,25 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <OutputType>Exe</OutputType>
+        <TargetFramework>net8.0</TargetFramework>
+        <RootNamespace>Aviation_Project</RootNamespace>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <None Remove="NetworkSourceSimulator.dll" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Reference Include="NetworkSourceSimulator">
+        <HintPath>..\..\..\..\Documents\Projektowanie Obiektowe\NetworkSourceSimulator.dll</HintPath>
+      </Reference>
+    </ItemGroup>
+
+    <ItemGroup>
+      <PackageReference Include="FlightTrackerGUI" Version="1.0.0" />
+    </ItemGroup>
+
+</Project>
