@@ -14,10 +14,16 @@ namespace Aviation_Project
 {
     internal class Program
     {
+        // TCP data provider
         private static NetworkSourceSimulator.NetworkSourceSimulator NSS;
+        // List of all objects
         static List<Object> allObjects = new List<Object>();
         private static object lockAllObj = new object();
+        // Time for GUI update
         public static DateTime Time = DateTime.Now;
+        // News Reports generator
+        private static NewsGenerator NG;
+        
         public static void Main(string[] args)
         {
             SetCulture(); // for . and , in ftr files
@@ -54,12 +60,28 @@ namespace Aviation_Project
                     break;
             }
             
-            // start the Timer in second thread with
+            // NEWS GENERATOR – initialization
+            // create media:
+            Radio r1 = new Radio("Radio Kwantyfikator");
+            Radio r2 = new Radio("Radio Shmem");
+            Television tv1 = new Television("Telewizja Abelowa");
+            Television tv2 = new Television("Kanał TV-tensor");
+            Newspaper np1 = new Newspaper("Gazeta Kategoryczna");
+            Newspaper np2 = new Newspaper("Dziennik Politechniczny");
+            List<Media> Media = new List<Media> { r1, r2, tv1, tv2, np1, np2 };
+            List<IReportable> Reportables = new List<IReportable>();
+            Reportables = Reportables.Concat(Airport.allAirports.Values.Cast<IReportable>().ToList()).ToList();
+            Reportables = Reportables.Concat(PassengerPlane.AllPassengerPlanes.Cast<IReportable>().ToList()).ToList();
+            Reportables = Reportables.Concat(CargoPlane.allCargoPlanes.Cast<IReportable>().ToList()).ToList();
+            NG = new NewsGenerator(Media, Reportables);
+            
+            // GUI UPDATES (stage 3)
+            // start the Timer in main thread
             System.Timers.Timer updateTimer = new System.Timers.Timer(1000); // 1s interval
             updateTimer.Elapsed += UpdateGUI;
             updateTimer.Start();
             
-            // Waiting for print or exit
+            // CONSOLE COMMANDS - start waiting in an additional thread
             Task RunnerTask = Task.Run(() => ListenToCommands());
             
             // All GUI stuff's got to be in the main thread
@@ -117,6 +139,10 @@ namespace Aviation_Project
                             Serializer.Snapshot(allObjects);
                         }
                         break;
+                    case "report":
+                        string news = NG.GenerateNextNews();
+                        Console.WriteLine(news);
+                        break;
                     default:
                         Console.WriteLine("Whaddya mean?");
                         break;
@@ -133,12 +159,9 @@ namespace Aviation_Project
             
             foreach (Flight flight in Flight.allFlights)
             {
-                DateTime Landing = DateTime.Parse(flight.LandingTime);
-                DateTime TakeOff = DateTime.Parse(flight.TakeoffTime);
-                
                 // I hope it's not a problem if the plane lands the next day (flies through midnight)
                 // If the flight is still on the ground or has already landed
-                if( Time > Landing || Time < TakeOff)
+                if( Time > flight.LandingTime || Time < flight.TakeoffTime)
                     continue;
                 
                // Create a FlightGUI object using an adapter

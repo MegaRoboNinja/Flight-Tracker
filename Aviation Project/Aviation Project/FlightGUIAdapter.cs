@@ -12,16 +12,13 @@ public class FlightGUIAdapter : FlightGUI
         WorldPosition flightPosition;
         double flightRotation;
         
-        DateTime Landing = DateTime.Parse(flight.LandingTime);
-        DateTime TakeOff = DateTime.Parse(flight.TakeoffTime);
-        
         // Get the origin and target airports
         Airport origin = Airport.allAirports[flight.OriginID];
         Airport target = Airport.allAirports[flight.TargetID];
         
         // Get the position of the flight
-        TimeSpan FlightDuration = Landing - TakeOff;
-        TimeSpan TimeElapsed = Program.Time - TakeOff;
+        TimeSpan FlightDuration = flight.LandingTime - flight.TakeoffTime;
+        TimeSpan TimeElapsed = Program.Time - flight.TakeoffTime;
         double progress = TimeElapsed.TotalSeconds / FlightDuration.TotalSeconds;
         
         // Interpolate the position of the flight

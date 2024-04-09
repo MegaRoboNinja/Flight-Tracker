@@ -2,8 +2,9 @@ using System;
 
 namespace Aviation_Project
 {
-    public class Airport : Object
+    public class Airport : Object, IReportable
     {
+        // dictionary of all airports - find object given it's id
         public static Dictionary<ulong, Airport> allAirports { get; set; } = new Dictionary<ulong, Airport>();
         public string Name { get; set; }
         public string AirportCode { get; set; }
@@ -33,6 +34,11 @@ namespace Aviation_Project
             AMSL = float.Parse(info[6]);
             Country = info[7];
             allAirports[ulong.Parse(info[1])] = this;
+        }
+
+        public string acceptReport(Media medium)
+        {
+            return medium.GetNewsReport(this);
         }
     }
 }

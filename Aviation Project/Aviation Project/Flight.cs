@@ -8,8 +8,8 @@ namespace Aviation_Project
         public static List<Flight> allFlights { get; set; } = new List<Flight>();
         public UInt64 OriginID { get; set; }
         public UInt64 TargetID { get; set; }
-        public string TakeoffTime { get; set; }
-        public string LandingTime { get; set; }
+        public DateTime TakeoffTime { get; set; }
+        public DateTime LandingTime { get; set; }
         public Single Longitude { get; set; }
         public Single Latitude { get; set; }
         public Single AMSL { get; set; }
@@ -17,7 +17,7 @@ namespace Aviation_Project
         public UInt64[] CrewIDs { get; set; }
         public UInt64[] LoadIDs { get; set; } // cargo or passengers
 
-        public Flight(string code, UInt64 id, ulong originId,  ulong targetId, string takeoffTime, string landingTime, float longitude, float latitude,  float amsl, ulong planeId, ulong[] crewIDs, ulong[] loadIDs) : base(code, id)
+        public Flight(string code, UInt64 id, ulong originId,  ulong targetId, DateTime takeoffTime, DateTime landingTime, float longitude, float latitude,  float amsl, ulong planeId, ulong[] crewIDs, ulong[] loadIDs) : base(code, id)
         {
             OriginID = originId;
             TargetID = targetId;
@@ -36,8 +36,8 @@ namespace Aviation_Project
         {
             OriginID = ushort.Parse(info[2]);
             TargetID = ushort.Parse(info[3]);
-            TakeoffTime = info[4];
-            LandingTime = info[5];
+            TakeoffTime = DateTime.Parse(info[4]);
+            LandingTime = DateTime.Parse(info[5]);
             Longitude = Single.Parse(info[6]);
             Latitude = Single.Parse(info[7]);
             AMSL = Single.Parse(info[8]);

@@ -61,9 +61,9 @@ class FlightGen : IByteFactory
         UInt64 OriginID = info.ReadUInt64();
         UInt64 DestinationID = info.ReadUInt64();
         UInt64 TakeoffAfterEpoch= info.ReadUInt64();
-        string TakeoffTime = DateTime.UnixEpoch.AddMilliseconds(TakeoffAfterEpoch).ToString();
+        DateTime TakeoffTime = DateTime.UnixEpoch.AddMilliseconds(TakeoffAfterEpoch);
         UInt64 LandingAfterEpoch= info.ReadUInt64();
-        string LandingTime = DateTime.UnixEpoch.AddMilliseconds(LandingAfterEpoch).ToString();
+        DateTime LandingTime = DateTime.UnixEpoch.AddMilliseconds(LandingAfterEpoch);
         float Longitude = info.ReadSingle();
         float Latitude = info.ReadSingle();
         float AMSL = info.ReadSingle();
