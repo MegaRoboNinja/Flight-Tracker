@@ -5,6 +5,7 @@
     * TCP server simulated by an additional thread
 - Reacting to console commands: 
     * print (creates a snapshot of the data collected by the program in a json file)
+    * report (prints out a newsreport to the console - demonstration of the visitor design pattern)
     * exit
 - Displaying ongoing flights in the GUI
 
