@@ -5,11 +5,21 @@
     * TCP server simulated by an additional thread
 - Reacting to console commands: 
     * print (creates a snapshot of the data collected by the program in a json file)
-    * report (prints out a newsreport to the console - demonstration of the visitor design pattern)
+    * report (prints out a newsreport to the console - demonstration of the _visitor_ design pattern)
     * exit
 - Displaying ongoing flights in the GUI
+- Reacting to object modification requests sent by the TCP server
+  * teleport (modify position, _decorator_ design pattern used to make displaying teleported flights possible)
+  * modify ID (for whatever reason)
+  * change contact info (for people)
+- Logging changes
+  * modifications
+  * new sessions
+  * errors
+  * a new log file for each day with distinguishable sessions
+ 
 
-The project is still in development...
+_The project is still being developed..._
 
 ---------------
 
