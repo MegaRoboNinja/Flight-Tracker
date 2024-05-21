@@ -22,7 +22,7 @@ public static class Serializer
         WriteToFile(serialized, fileName, filePath);
     }
 
-    private static void WriteToFile(string serialized, string fileName, string filePath)
+    public static void WriteToFile(string serialized, string fileName, string filePath)
     {
         if (!File.Exists(filePath))
         {

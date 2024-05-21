@@ -2,10 +2,10 @@ using System;
 
 namespace Aviation_Project
 {
-    public class Flight : Object
+    public class Flight : Object, IPositionable
     {
         // public property allowing to access all flights
-        public static List<Flight> allFlights { get; set; } = new List<Flight>();
+        public static List<Flight> allFlights { get; set; } = new List<Flight>(); // can be safely removed
         public UInt64 OriginID { get; set; }
         public UInt64 TargetID { get; set; }
         public DateTime TakeoffTime { get; set; }
@@ -31,7 +31,7 @@ namespace Aviation_Project
             LoadIDs = loadIDs;
             allFlights.Add(this);
         }
-
+        
         public Flight(string[] info) : base(info)
         {
             OriginID = ushort.Parse(info[2]);

@@ -12,6 +12,7 @@ namespace Aviation_Project
             Code = code;
             ID = id;
         }
+
         public Object(string[] info)
         {
             Code = info[0];

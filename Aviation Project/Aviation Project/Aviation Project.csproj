@@ -13,13 +13,13 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Reference Include="NetworkSourceSimulator">
-        <HintPath>..\..\..\..\Documents\Projektowanie Obiektowe\NetworkSourceSimulator.dll</HintPath>
-      </Reference>
+      <PackageReference Include="FlightTrackerGUI" Version="1.0.0" />
     </ItemGroup>
 
     <ItemGroup>
-      <PackageReference Include="FlightTrackerGUI" Version="1.0.0" />
+      <Reference Include="NetworkSourceSimulator">
+        <HintPath>Resources\NetworkSourceSimulator.dll</HintPath>
+      </Reference>
     </ItemGroup>
 
 </Project>

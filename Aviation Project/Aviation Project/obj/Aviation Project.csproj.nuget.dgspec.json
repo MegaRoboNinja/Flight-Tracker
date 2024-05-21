@@ -1,20 +1,20 @@
 {
   "format": 1,
   "restore": {
-    "/Users/jansobieski/Developer/ProjOb_24L_01177925/Aviation Project/Aviation Project/Aviation Project.csproj": {}
+    "/Users/miloszwysocki/Developer/ProjOb_24L_01177925/Aviation Project/Aviation Project/Aviation Project.csproj": {}
   },
   "projects": {
-    "/Users/jansobieski/Developer/ProjOb_24L_01177925/Aviation Project/Aviation Project/Aviation Project.csproj": {
+    "/Users/miloszwysocki/Developer/ProjOb_24L_01177925/Aviation Project/Aviation Project/Aviation Project.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "/Users/jansobieski/Developer/ProjOb_24L_01177925/Aviation Project/Aviation Project/Aviation Project.csproj",
+        "projectUniqueName": "/Users/miloszwysocki/Developer/ProjOb_24L_01177925/Aviation Project/Aviation Project/Aviation Project.csproj",
         "projectName": "Aviation Project",
-        "projectPath": "/Users/jansobieski/Developer/ProjOb_24L_01177925/Aviation Project/Aviation Project/Aviation Project.csproj",
-        "packagesPath": "/Users/jansobieski/.nuget/packages/",
-        "outputPath": "/Users/jansobieski/Developer/ProjOb_24L_01177925/Aviation Project/Aviation Project/obj/",
+        "projectPath": "/Users/miloszwysocki/Developer/ProjOb_24L_01177925/Aviation Project/Aviation Project/Aviation Project.csproj",
+        "packagesPath": "/Users/miloszwysocki/.nuget/packages/",
+        "outputPath": "/Users/miloszwysocki/Developer/ProjOb_24L_01177925/Aviation Project/Aviation Project/obj/",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "/Users/jansobieski/.nuget/NuGet/NuGet.Config"
+          "/Users/miloszwysocki/.nuget/NuGet/NuGet.Config"
         ],
         "originalTargetFrameworks": [
           "net8.0"

@@ -16,9 +16,8 @@ namespace Aviation_Project
     {
         // TCP data provider
         private static NetworkSourceSimulator.NetworkSourceSimulator NSS;
-        // List of all objects
-        static List<Object> allObjects = new List<Object>();
-        private static object lockAllObj = new object();
+        // Data Base containing all objects
+        private static DataBase DB = new();
         // Time for GUI update
         public static DateTime Time = DateTime.Now;
         // News Reports generator
@@ -33,7 +32,7 @@ namespace Aviation_Project
             {
                 Console.WriteLine("Paths to files containing data weren't provided. Trying hardcoded paths...");
                 args = new string[1];
-                args[0] = @"/Users/jansobieski/Documents/Projektowanie Obiektowe/example_data.ftr.txt";
+                args[0] = @"/Users/miloszwysocki/Documents/Projektowanie Obiektowe/example_data.ftr.txt";
             }
             if (args.Length < 2)
             {
@@ -44,21 +43,32 @@ namespace Aviation_Project
                 args = temp;
             }
 
+            // start second THREAD that will simulate network source
+            string PathFtre = @"/Users/miloszwysocki/Developer/ProjOb_24L_01177925/Aviation Project/Aviation Project/Resources/example.ftre"; // harcoded for now
+            NSS = new NetworkSourceSimulator.NetworkSourceSimulator(PathFtre, 500, 1000);
+            Thread NssThread = new Thread(new ThreadStart(NSS.Run));
+            
+            
             // SELECT DATA SOURCE
             switch (args[1])
             {
                 case "FTR":
                     // Get data from FTR file
-                    ReadFTR(args[0], allObjects);
+                    List<Object> LoadedObjects = new List<Object>();
+                    ReadFTR(args[0], LoadedObjects);
+                    DB = new DataBase(LoadedObjects);
                     break;
                 case "NSS":
-                    // start second THREAD that will simulate network source
-                    NSS = new NetworkSourceSimulator.NetworkSourceSimulator(args[0], 50, 100);
-                    Thread RunThread = new Thread(new ThreadStart(NSS.Run));
+                    // Add event handler that gets new data
                     NSS.OnNewDataReady += NSS_NewDataReady;
-                    RunThread.Start();
                     break;
             }
+            // Add event handlers that get updates from the network source
+            NSS.OnIDUpdate += DB.IDUpdate;
+            NSS.OnPositionUpdate += DB.PositionUpdate;
+            NSS.OnContactInfoUpdate += DB.ContactInfoUpdate;
+            NssThread.Start();
+            
             
             // NEWS GENERATOR – initialization
             // create media:
@@ -74,6 +84,7 @@ namespace Aviation_Project
             Reportables = Reportables.Concat(PassengerPlane.AllPassengerPlanes.Cast<IReportable>().ToList()).ToList();
             Reportables = Reportables.Concat(CargoPlane.allCargoPlanes.Cast<IReportable>().ToList()).ToList();
             NG = new NewsGenerator(Media, Reportables);
+            // TODO: avoid copying - change it to sth else
             
             // GUI UPDATES (stage 3)
             // start the Timer in main thread
@@ -114,10 +125,7 @@ namespace Aviation_Project
         {
             byte[] info = NSS.GetMessageAt(args.MessageIndex).MessageBytes;
 
-            lock (lockAllObj)
-            {
-                allObjects.Add(ObjectFactory.CreateObject(info));
-            }
+            DB.AddObject(ObjectFactory.CreateObject(info));
         }
         
         static void ListenToCommands()
@@ -134,14 +142,12 @@ namespace Aviation_Project
                         exitRequested = true;
                         break;
                     case "print":
-                        lock (lockAllObj)
-                        {
-                            Serializer.Snapshot(allObjects);
-                        }
+                        DB.Serialize();
                         break;
                     case "report":
-                        string news = NG.GenerateNextNews();
-                        Console.WriteLine(news);
+                        string news;
+                        while ((news = NG.GenerateNextNews()) != null)
+                            Console.WriteLine(news);
                         break;
                     default:
                         Console.WriteLine("Whaddya mean?");
@@ -157,7 +163,7 @@ namespace Aviation_Project
         {
             List<FlightGUI> flightGUIList = new List<FlightGUI>();
             
-            foreach (Flight flight in Flight.allFlights)
+            foreach (FlightDecorator flight in DB.GetAllFlights() ) //Flight.allFlights
             {
                 // I hope it's not a problem if the plane lands the next day (flies through midnight)
                 // If the flight is still on the ground or has already landed
@@ -165,7 +171,7 @@ namespace Aviation_Project
                     continue;
                 
                // Create a FlightGUI object using an adapter
-               FlightGUIAdapter flightGUI = new FlightGUIAdapter(flight);
+               FlightGUIConverter flightGUI = new FlightGUIConverter(flight);
                 
                 // Add it to the list that will be passed to GUI
                 flightGUIList.Add(flightGUI);
